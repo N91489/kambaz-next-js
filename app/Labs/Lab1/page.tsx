@@ -1,9 +1,53 @@
+import Link from "next/link";
 import React from "react";
 
 export default function Lab1() {
   return (
     <div id="wd-lab1">
-      <h2>Lab 1</h2>
+      <h1>Web Dev Project of Nishit</h1>
+
+      {/* Add your full name and section here */}
+      <h2>Full Name: Nishit Agarwal</h2>
+      <h3>Section: 05 (Online)</h3>
+
+      {/* Links to Lab Assignments */}
+      <div id="wd-lab-links">
+        <h3>Lab Assignments</h3>
+        <ul>
+          <li>
+            <a href="/Labs/Lab1">Lab 1</a>
+          </li>
+          <li>
+            <a href="/Labs/Lab2">Lab 2</a>
+          </li>
+          <li>
+            <a href="/Labs/Lab3">Lab 3</a>
+          </li>
+        </ul>
+      </div>
+
+      <div id="wd-kambaz-link">
+        <h3>Kambaz Application</h3>
+        <p>
+          <Link href="https://kambaz-next-js-flame.vercel.app/Labs">
+            Kambaz Application
+          </Link>
+        </p>
+      </div>
+      <div id="wd-source-code-links">
+        <h3>Source Code Repositories</h3>
+
+        <Link href="https://github.com/N91489/kambaz-next-js">
+          GitHub Repository
+        </Link>
+      </div>
+
+      <hr />
+
+      <p>My Practice of My First Day - Nothing Much</p>
+      <hr />
+
+      <h2>Lab 1 - HTML Practice</h2>
       <h3>HTML Examples</h3>
 
       <div id="wd-h-tag">
