@@ -136,8 +136,8 @@ export default function Lab1() {
       </div>
       <div id="wd-text-area-block">
         <textarea
-          cols="20"
-          rows="5"
+          cols={20}
+          rows={5}
           id="wd-text-area"
           placeholder="Write About Yourself"
         >
