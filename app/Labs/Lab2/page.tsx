@@ -54,7 +54,7 @@ export default function Lab2() {
       <div id="wd-css-class-selectors">
         <h3>Class selectors</h3>
         <p className="wd-class-selector">
-          Instead of using IDs to refer to elements, you can use an element's
+          Instead of using IDs to refer to elements, you can use an elements
           CLASS attribute
         </p>
         <h4 className="wd-class-selector">
