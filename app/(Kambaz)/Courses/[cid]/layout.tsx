@@ -1,28 +1,36 @@
+"use client";
+
 import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
-export default async function CoursesLayout({
+
+export default function CourseLayout({
   children,
-  params,
-}: Readonly<{ children: ReactNode; params: Promise<{ cid: string }> }>) {
-  const { cid } = await params;
+}: Readonly<{ children: ReactNode }>) {
   return (
-    <div id="wd-courses">
-      <h2>Courses {cid}</h2>
-      <hr />
-      <table>
-        <tbody>
-          <tr>
-            <td valign="top" width="200">
-              {" "}
-              <CourseNavigation />{" "}
-            </td>
-            <td valign="top" width="100%">
-              {" "}
-              {children}{" "}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div style={{ display: "flex", width: "100%" }}>
+      {/* 2nd column - Course Navigation */}
+      <div
+        className="course-nav"
+        style={{
+          width: "200px",
+          backgroundColor: "white",
+          borderRight: "1px solid #ddd",
+          minHeight: "100vh",
+        }}
+      >
+        <CourseNavigation />
+      </div>
+
+      {/* Main content area */}
+      <div style={{ flex: "1" }}>{children}</div>
+
+      <style jsx>{`
+        @media (max-width: 992px) {
+          .course-nav {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 }
