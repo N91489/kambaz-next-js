@@ -6,6 +6,84 @@ export default function AssignmentEditor() {
   const cid = params.cid as string;
   const aid = params.aid as string;
 
+  // Assignment data structure - could be fetched based on aid
+  const assignments = {
+    "123": {
+      name: "A1 - ENV + HTML",
+      description:
+        "Your Assignment is to READ THIS BECAUSE I MADE THIS ASSIGNMENT, i dont even know what to write here i have never given an assignment i have been a student my whole life.",
+      points: 100,
+      assignmentGroup: "ASSIGNMENTS",
+      displayGradeAs: "PERCENTAGE",
+      submissionType: "ONLINE",
+      assignTo: "Everyone",
+      dueDate: "2025-01-01",
+      availableFrom: "2025-01-01",
+      availableUntil: "2025-01-01",
+    },
+    "124": {
+      name: "A2 - CSS + BOOTSTRAP",
+      description: "Learn CSS and Bootstrap for styling web applications.",
+      points: 100,
+      assignmentGroup: "ASSIGNMENTS",
+      displayGradeAs: "PERCENTAGE",
+      submissionType: "ONLINE",
+      assignTo: "Everyone",
+      dueDate: "2025-01-15",
+      availableFrom: "2025-01-08",
+      availableUntil: "2025-01-20",
+    },
+    "125": {
+      name: "A3 - REACT + TYPESCRIPT",
+      description: "Build a React application using TypeScript.",
+      points: 100,
+      assignmentGroup: "ASSIGNMENTS",
+      displayGradeAs: "PERCENTAGE",
+      submissionType: "ONLINE",
+      assignTo: "Everyone",
+      dueDate: "2025-02-01",
+      availableFrom: "2025-01-25",
+      availableUntil: "2025-02-05",
+    },
+  };
+
+  // Get current assignment data
+  const assignment =
+    assignments[aid as keyof typeof assignments] || assignments["123"];
+
+  // Dropdown options data
+  const assignmentGroups = [
+    { value: "ASSIGNMENTS", label: "ASSIGNMENTS" },
+    { value: "QUIZZES", label: "QUIZZES" },
+    { value: "EXAMS", label: "EXAMS" },
+    { value: "PROJECT", label: "PROJECT" },
+    { value: "LABS", label: "LABS" },
+  ];
+
+  const displayGradeOptions = [
+    { value: "PERCENTAGE", label: "Percentage" },
+    { value: "COMPLETE_INCOMPLETE", label: "Complete/Incomplete" },
+    { value: "POINTS", label: "Points" },
+    { value: "LETTER_GRADE", label: "Letter Grade" },
+    { value: "GPA_SCALE", label: "GPA Scale" },
+    { value: "NOT_GRADED", label: "Not Graded" },
+  ];
+
+  const submissionTypes = [
+    { value: "ONLINE", label: "Online" },
+    { value: "ON_PAPER", label: "On Paper" },
+    { value: "NO_SUBMISSION", label: "No Submission" },
+    { value: "EXTERNAL_TOOL", label: "External Tool" },
+  ];
+
+  const onlineEntryOptions = [
+    { id: "wd-text-entry", label: "Text Entry" },
+    { id: "wd-website-url", label: "Website URL" },
+    { id: "wd-media-recordings", label: "Media Recordings" },
+    { id: "wd-student-annotation", label: "Student Annotation" },
+    { id: "wd-file-upload", label: "File Uploads" },
+  ];
+
   return (
     <div id="wd-assignments-editor" className="container-fluid p-4">
       {/* Breadcrumb */}
@@ -21,7 +99,7 @@ export default function AssignmentEditor() {
         <input
           id="wd-name"
           className="form-control"
-          defaultValue="A1 - ENV + HTML"
+          defaultValue={assignment.name}
         />
       </div>
 
@@ -34,7 +112,7 @@ export default function AssignmentEditor() {
           id="wd-description"
           className="form-control"
           rows={10}
-          defaultValue="Your Assignment is to READ THIS BECAUSE I MADE THIS ASSIGNMENT, i dont even know what to write here i have never given an assignment i have been a student my whole life."
+          defaultValue={assignment.description}
         />
       </div>
 
@@ -48,12 +126,12 @@ export default function AssignmentEditor() {
             id="wd-points"
             className="form-control"
             type="number"
-            defaultValue={100}
+            defaultValue={assignment.points}
           />
         </div>
       </div>
 
-      {/* Assignment Group */}
+      {/* Assignment Group - Data Driven */}
       <div className="row mb-3">
         <label htmlFor="wd-group" className="col-sm-2 col-form-label text-end">
           Assignment Group
@@ -62,18 +140,18 @@ export default function AssignmentEditor() {
           <select
             id="wd-group"
             className="form-select"
-            defaultValue="ASSIGNMENTS"
+            defaultValue={assignment.assignmentGroup}
           >
-            <option value="ASSIGNMENTS">ASSIGNMENTS</option>
-            <option value="QUIZZES">QUIZZES</option>
-            <option value="EXAMS">EXAMS</option>
-            <option value="PROJECT">PROJECT</option>
-            <option value="LABS">LABS</option>
+            {assignmentGroups.map((group) => (
+              <option key={group.value} value={group.value}>
+                {group.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>
 
-      {/* Display Grade as */}
+      {/* Display Grade as - Data Driven */}
       <div className="row mb-3">
         <label
           htmlFor="wd-display-grade-as"
@@ -85,19 +163,18 @@ export default function AssignmentEditor() {
           <select
             id="wd-display-grade-as"
             className="form-select"
-            defaultValue="PERCENTAGE"
+            defaultValue={assignment.displayGradeAs}
           >
-            <option value="PERCENTAGE">Percentage</option>
-            <option value="COMPLETE_INCOMPLETE">Complete/Incomplete</option>
-            <option value="POINTS">Points</option>
-            <option value="LETTER_GRADE">Letter Grade</option>
-            <option value="GPA_SCALE">GPA Scale</option>
-            <option value="NOT_GRADED">Not Graded</option>
+            {displayGradeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>
 
-      {/* Submission Type */}
+      {/* Submission Type - Data Driven */}
       <div className="row mb-3">
         <label
           htmlFor="wd-submission-type"
@@ -110,80 +187,33 @@ export default function AssignmentEditor() {
             <select
               id="wd-submission-type"
               className="form-select mb-3"
-              defaultValue="ONLINE"
+              defaultValue={assignment.submissionType}
             >
-              <option value="ONLINE">Online</option>
-              <option value="ON_PAPER">On Paper</option>
-              <option value="NO_SUBMISSION">No Submission</option>
-              <option value="EXTERNAL_TOOL">External Tool</option>
+              {submissionTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
             </select>
 
             <div className="mb-2">
               <strong>Online Entry Options</strong>
             </div>
 
-            <div className="form-check mb-2">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                name="online-options"
-                id="wd-text-entry"
-              />
-              <label className="form-check-label" htmlFor="wd-text-entry">
-                Text Entry
-              </label>
-            </div>
-
-            <div className="form-check mb-2">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                name="online-options"
-                id="wd-website-url"
-              />
-              <label className="form-check-label" htmlFor="wd-website-url">
-                Website URL
-              </label>
-            </div>
-
-            <div className="form-check mb-2">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                name="online-options"
-                id="wd-media-recordings"
-              />
-              <label className="form-check-label" htmlFor="wd-media-recordings">
-                Media Recordings
-              </label>
-            </div>
-
-            <div className="form-check mb-2">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                name="online-options"
-                id="wd-student-annotation"
-              />
-              <label
-                className="form-check-label"
-                htmlFor="wd-student-annotation"
-              >
-                Student Annotation
-              </label>
-            </div>
-
-            <div className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                name="online-options"
-                id="wd-file-upload"
-              />
-              <label className="form-check-label" htmlFor="wd-file-upload">
-                File Uploads
-              </label>
-            </div>
+            {/* Online Entry Options - Data Driven */}
+            {onlineEntryOptions.map((option) => (
+              <div key={option.id} className="form-check mb-2">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  name="online-options"
+                  id={option.id}
+                />
+                <label className="form-check-label" htmlFor={option.id}>
+                  {option.label}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -200,7 +230,7 @@ export default function AssignmentEditor() {
               <input
                 id="wd-assign-to"
                 className="form-control"
-                defaultValue="Everyone"
+                defaultValue={assignment.assignTo}
               />
             </div>
 
@@ -212,7 +242,7 @@ export default function AssignmentEditor() {
                 type="date"
                 id="wd-due-date"
                 className="form-control"
-                defaultValue="2025-01-01"
+                defaultValue={assignment.dueDate}
               />
             </div>
 
@@ -225,7 +255,7 @@ export default function AssignmentEditor() {
                   type="date"
                   id="wd-available-from"
                   className="form-control"
-                  defaultValue="2025-01-01"
+                  defaultValue={assignment.availableFrom}
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -236,7 +266,7 @@ export default function AssignmentEditor() {
                   type="date"
                   id="wd-available-until"
                   className="form-control"
-                  defaultValue="2025-01-01"
+                  defaultValue={assignment.availableUntil}
                 />
               </div>
             </div>

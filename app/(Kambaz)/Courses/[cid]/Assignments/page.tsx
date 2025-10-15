@@ -8,6 +8,34 @@ export default function Assignments() {
   const router = useRouter();
   const cid = params.cid as string;
 
+  // Data structure for assignments
+  const assignments = [
+    {
+      id: "123",
+      title: "A1 - ENV + HTML",
+      module: "Multiple Modules",
+      availableDate: "Jan 1 at 12:00am",
+      dueDate: "Jan 15 at 11:59pm",
+      points: 100,
+    },
+    {
+      id: "124",
+      title: "A2 - CSS + BOOTSTRAP",
+      module: "Multiple Modules",
+      availableDate: "Jan 15 at 12:00am",
+      dueDate: "Jan 30 at 11:59pm",
+      points: 100,
+    },
+    {
+      id: "125",
+      title: "A3 - REACT + TYPESCRIPT",
+      module: "Multiple Modules",
+      availableDate: "Feb 1 at 12:00am",
+      dueDate: "Feb 15 at 11:59pm",
+      points: 100,
+    },
+  ];
+
   const handleAddAssignment = () => {
     router.push(`/Courses/${cid}/Assignments/new`);
   };
@@ -115,159 +143,70 @@ export default function Assignments() {
           </div>
         </div>
 
-        {/* Assignment List */}
+        {/* Data-Driven Assignment List */}
         <ul
           id="wd-assignment-list"
           style={{ listStyle: "none", padding: 0, margin: 0 }}
         >
-          <li
-            className="wd-assignment-list-item"
-            style={{
-              borderLeft: "4px solid green",
-              padding: "12px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderBottom: "1px solid #ddd",
-            }}
-          >
-            <div>
-              <i
-                className="bi bi-grip-vertical"
-                style={{ marginRight: "10px", color: "#666" }}
-              ></i>
-              <i
-                className="bi bi-file-text"
-                style={{ marginRight: "10px", color: "green" }}
-              ></i>
-              <div style={{ display: "inline-block" }}>
-                <Link
-                  href={`/Courses/${cid}/Assignments/123`}
-                  className="wd-assignment-link"
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  <strong>A1 - ENV + HTML</strong>
-                </Link>
-                <div
-                  style={{ fontSize: "14px", color: "#666", marginTop: "4px" }}
-                >
-                  <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
-                  <strong>Not available until</strong> Jan 1 at 12:00am |
-                  <br />
-                  <strong>Due</strong> Jan 15 at 11:59pm | 100 pts
+          {assignments.map((assignment, index) => (
+            <li
+              key={assignment.id}
+              className="wd-assignment-list-item"
+              style={{
+                borderLeft: "4px solid green",
+                padding: "12px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom:
+                  index < assignments.length - 1 ? "1px solid #ddd" : "none",
+              }}
+            >
+              <div>
+                <i
+                  className="bi bi-grip-vertical"
+                  style={{ marginRight: "10px", color: "#666" }}
+                ></i>
+                <i
+                  className="bi bi-file-text"
+                  style={{ marginRight: "10px", color: "green" }}
+                ></i>
+                <div style={{ display: "inline-block" }}>
+                  <Link
+                    href={`/Courses/${cid}/Assignments/${assignment.id}`}
+                    className="wd-assignment-link"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <strong>{assignment.title}</strong>
+                  </Link>
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      color: "#666",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <span style={{ color: "red" }}>{assignment.module}</span> |{" "}
+                    <strong>Not available until</strong>{" "}
+                    {assignment.availableDate} |
+                    <br />
+                    <strong>Due</strong> {assignment.dueDate} |{" "}
+                    {assignment.points} pts
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <i
-                className="bi bi-check-circle"
-                style={{ marginRight: "10px", color: "green" }}
-              ></i>
-              <i
-                className="bi bi-three-dots-vertical"
-                style={{ cursor: "pointer" }}
-              ></i>
-            </div>
-          </li>
-
-          <li
-            className="wd-assignment-list-item"
-            style={{
-              borderLeft: "4px solid green",
-              padding: "12px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderBottom: "1px solid #ddd",
-            }}
-          >
-            <div>
-              <i
-                className="bi bi-grip-vertical"
-                style={{ marginRight: "10px", color: "#666" }}
-              ></i>
-              <i
-                className="bi bi-file-text"
-                style={{ marginRight: "10px", color: "green" }}
-              ></i>
-              <div style={{ display: "inline-block" }}>
-                <Link
-                  href={`/Courses/${cid}/Assignments/124`}
-                  className="wd-assignment-link"
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  <strong>A2 - CSS + BOOTSTRAP</strong>
-                </Link>
-                <div
-                  style={{ fontSize: "14px", color: "#666", marginTop: "4px" }}
-                >
-                  <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
-                  <strong>Not available until</strong> Jan 15 at 12:00am |
-                  <br />
-                  <strong>Due</strong> Jan 30 at 11:59pm | 100 pts
-                </div>
+              <div>
+                <i
+                  className="bi bi-check-circle"
+                  style={{ marginRight: "10px", color: "green" }}
+                ></i>
+                <i
+                  className="bi bi-three-dots-vertical"
+                  style={{ cursor: "pointer" }}
+                ></i>
               </div>
-            </div>
-            <div>
-              <i
-                className="bi bi-check-circle"
-                style={{ marginRight: "10px", color: "green" }}
-              ></i>
-              <i
-                className="bi bi-three-dots-vertical"
-                style={{ cursor: "pointer" }}
-              ></i>
-            </div>
-          </li>
-
-          <li
-            className="wd-assignment-list-item"
-            style={{
-              borderLeft: "4px solid green",
-              padding: "12px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <i
-                className="bi bi-grip-vertical"
-                style={{ marginRight: "10px", color: "#666" }}
-              ></i>
-              <i
-                className="bi bi-file-text"
-                style={{ marginRight: "10px", color: "green" }}
-              ></i>
-              <div style={{ display: "inline-block" }}>
-                <Link
-                  href={`/Courses/${cid}/Assignments/125`}
-                  className="wd-assignment-link"
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  <strong>A3 - REACT + TYPESCRIPT</strong>
-                </Link>
-                <div
-                  style={{ fontSize: "14px", color: "#666", marginTop: "4px" }}
-                >
-                  <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
-                  <strong>Not available until</strong> Feb 1 at 12:00am |
-                  <br />
-                  <strong>Due</strong> Feb 15 at 11:59pm | 100 pts
-                </div>
-              </div>
-            </div>
-            <div>
-              <i
-                className="bi bi-check-circle"
-                style={{ marginRight: "10px", color: "green" }}
-              ></i>
-              <i
-                className="bi bi-three-dots-vertical"
-                style={{ cursor: "pointer" }}
-              ></i>
-            </div>
-          </li>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
