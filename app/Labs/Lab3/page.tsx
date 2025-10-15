@@ -526,7 +526,7 @@ export default function Lab3() {
 // Component Definitions
 function VariablesAndConstants() {
   const a = 5;
-  let b = 10;
+  const b = 10;
   return (
     <div>
       <p>a = {a}</p>
@@ -536,9 +536,9 @@ function VariablesAndConstants() {
 }
 
 function VariableTypes() {
-  let numberVar: number = 123;
-  let stringVar: string = "Hello";
-  let boolVar: boolean = true;
+  const numberVar: number = 123;
+  const stringVar: string = "Hello";
+  const boolVar: boolean = true;
   return (
     <div>
       <p>Number: {numberVar}</p>
