@@ -2,6 +2,7 @@
 import { useParams } from "next/navigation";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import * as db from "../../../Database";
+import { Module, Lesson } from "../../../Database/types";
 
 export default function Modules() {
   const { cid } = useParams();
@@ -73,8 +74,8 @@ export default function Modules() {
       {/* Data-Driven Modules List */}
       <ul id="wd-modules" style={{ listStyle: "none", padding: 0 }}>
         {modules
-          .filter((module: any) => module.course === cid)
-          .map((module: any) => (
+          .filter((module: Module) => module.course === cid)
+          .map((module: Module) => (
             <li
               key={module._id}
               className="wd-module"
@@ -113,7 +114,7 @@ export default function Modules() {
                   className="wd-lessons"
                   style={{ listStyle: "none", padding: 0 }}
                 >
-                  {module.lessons.map((lesson: any, index: number) => (
+                  {module.lessons.map((lesson: Lesson, index: number) => (
                     <li
                       key={lesson._id}
                       className="wd-lesson"

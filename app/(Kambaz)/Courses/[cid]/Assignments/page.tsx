@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import * as db from "../../../Database";
+import { Assignment } from "../../../Database/types";
 
 export default function Assignments() {
   const params = useParams();
@@ -120,8 +121,8 @@ export default function Assignments() {
           style={{ listStyle: "none", padding: 0, margin: 0 }}
         >
           {assignments
-            .filter((assignment: any) => assignment.course === cid)
-            .map((assignment: any, index: number) => (
+            .filter((assignment: Assignment) => assignment.course === cid)
+            .map((assignment: Assignment, index: number) => (
               <li
                 key={assignment._id}
                 className="wd-assignment-list-item"
@@ -132,8 +133,8 @@ export default function Assignments() {
                   justifyContent: "space-between",
                   alignItems: "center",
                   borderBottom:
-                    index <
-                    assignments.filter((a: any) => a.course === cid).length - 1
+                    index 
+                assignments.filter((a: Assignment) => a.course === cid).length - 1
                       ? "1px solid #ddd"
                       : "none",
                 }}

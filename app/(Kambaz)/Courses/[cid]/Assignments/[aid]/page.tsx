@@ -2,13 +2,14 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import * as db from "../../../../Database";
+import { Assignment } from "../../../../Database/types";
 
 export default function AssignmentEditor() {
   const params = useParams();
   const cid = params.cid as string;
   const aid = params.aid as string;
 
-  const assignment = db.assignments.find((a: any) => a._id === aid);
+  const assignment = db.assignments.find((a: Assignment) => a._id === aid);
 
   if (!assignment) {
     return <div>Assignment not found</div>;
@@ -89,44 +90,133 @@ export default function AssignmentEditor() {
         </div>
       </div>
 
-      {/* Keep all other form fields as is */}
-      {/* ... */}
-
-      {/* Due Date */}
-      <div className="mb-3">
-        <label htmlFor="wd-due-date" className="form-label">
-          Due
+      {/* Assignment Group */}
+      <div className="row mb-3">
+        <label htmlFor="wd-group" className="col-sm-2 col-form-label text-end">
+          Assignment Group
         </label>
-        <input
-          type="date"
-          id="wd-due-date"
-          className="form-control"
-          defaultValue={assignment.dueDate}
-        />
+        <div className="col-sm-10">
+          <select id="wd-group" className="form-select">
+            {assignmentGroups.map((group) => (
+              <option key={group.value} value={group.value}>
+                {group.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="row">
-        <div className="col-md-6 mb-3">
-          <label htmlFor="wd-available-from" className="form-label">
-            Available from
-          </label>
-          <input
-            type="date"
-            id="wd-available-from"
-            className="form-control"
-            defaultValue={assignment.availableFromDate}
-          />
+      {/* Display Grade as */}
+      <div className="row mb-3">
+        <label
+          htmlFor="wd-display-grade-as"
+          className="col-sm-2 col-form-label text-end"
+        >
+          Display Grade as
+        </label>
+        <div className="col-sm-10">
+          <select id="wd-display-grade-as" className="form-select">
+            {displayGradeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
-        <div className="col-md-6 mb-3">
-          <label htmlFor="wd-available-until" className="form-label">
-            Until
-          </label>
-          <input
-            type="date"
-            id="wd-available-until"
-            className="form-control"
-            defaultValue={assignment.availableUntilDate}
-          />
+      </div>
+
+      {/* Submission Type */}
+      <div className="row mb-3">
+        <label
+          htmlFor="wd-submission-type"
+          className="col-sm-2 col-form-label text-end"
+        >
+          Submission Type
+        </label>
+        <div className="col-sm-10">
+          <div className="border p-3">
+            <select id="wd-submission-type" className="form-select mb-3">
+              {submissionTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+
+            <div className="mb-2">
+              <strong>Online Entry Options</strong>
+            </div>
+
+            {onlineEntryOptions.map((option) => (
+              <div key={option.id} className="form-check mb-2">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  name="online-options"
+                  id={option.id}
+                />
+                <label className="form-check-label" htmlFor={option.id}>
+                  {option.label}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Assign */}
+      <div className="row mb-3">
+        <label className="col-sm-2 col-form-label text-end">Assign</label>
+        <div className="col-sm-10">
+          <div className="border p-3">
+            <div className="mb-3">
+              <label htmlFor="wd-assign-to" className="form-label">
+                Assign to
+              </label>
+              <input
+                id="wd-assign-to"
+                className="form-control"
+                defaultValue="Everyone"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="wd-due-date" className="form-label">
+                Due
+              </label>
+              <input
+                type="date"
+                id="wd-due-date"
+                className="form-control"
+                defaultValue={assignment.dueDate}
+              />
+            </div>
+
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label htmlFor="wd-available-from" className="form-label">
+                  Available from
+                </label>
+                <input
+                  type="date"
+                  id="wd-available-from"
+                  className="form-control"
+                  defaultValue={assignment.availableFromDate}
+                />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label htmlFor="wd-available-until" className="form-label">
+                  Until
+                </label>
+                <input
+                  type="date"
+                  id="wd-available-until"
+                  className="form-control"
+                  defaultValue={assignment.availableUntilDate}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

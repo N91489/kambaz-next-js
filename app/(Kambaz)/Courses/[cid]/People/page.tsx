@@ -2,6 +2,7 @@
 import { useParams } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
 import * as db from "../../../Database";
+import { User, Enrollment } from "../../../Database/types";
 
 export default function People() {
   const { cid } = useParams();
@@ -35,13 +36,13 @@ export default function People() {
         </thead>
         <tbody>
           {users
-            .filter((usr) =>
+            .filter((usr: User) =>
               enrollments.some(
-                (enrollment) =>
+                (enrollment: Enrollment) =>
                   enrollment.user === usr._id && enrollment.course === cid
               )
             )
-            .map((user: any) => (
+            .map((user: User) => (
               <tr key={user._id} style={{ borderBottom: "1px solid #ddd" }}>
                 <td style={{ padding: "12px" }}>
                   <FaUserCircle
