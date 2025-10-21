@@ -1,52 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
+import * as db from "../Database";
 
 export default function Dashboard() {
-  // Data structure for courses
-  const courses = [
-    {
-      id: "001",
-      name: "CS001 React JS",
-      description: "Full Stack software developer",
-      image: "/images/its-hard.jpg",
-    },
-    {
-      id: "002",
-      name: "CS002 Algorithms",
-      description: "Full Stack software developer",
-      image: "/images/its-hard.jpg",
-    },
-    {
-      id: "003",
-      name: "CS003 System Engineer",
-      description: "Full Stack software developer",
-      image: "/images/its-hard.jpg",
-    },
-    {
-      id: "004",
-      name: "CS004 Low Level",
-      description: "Full Stack software developer",
-      image: "/images/its-hard.jpg",
-    },
-    {
-      id: "005",
-      name: "CS005 IoT",
-      description: "Full Stack software developer",
-      image: "/images/its-hard.jpg",
-    },
-    {
-      id: "006",
-      name: "CS006 AI/ML",
-      description: "Full Stack software developer",
-      image: "/images/its-hard.jpg",
-    },
-    {
-      id: "007",
-      name: "CS007 Backend Engineering",
-      description: "Full Stack software developer",
-      image: "/images/its-hard.jpg",
-    },
-  ];
+  const courses = db.courses; // Changed this line
 
   return (
     <div id="wd-dashboard" style={{ padding: "20px" }}>
@@ -65,12 +22,12 @@ export default function Dashboard() {
       >
         {courses.map((course) => (
           <div
-            key={course.id}
+            key={course._id}
             className="wd-dashboard-course"
             style={{ width: "100%" }}
           >
             <Link
-              href={`/Courses/${course.id}`}
+              href={`/Courses/${course._id}/Home`}
               className="wd-dashboard-course-link"
             >
               <div
@@ -81,7 +38,7 @@ export default function Dashboard() {
                 }}
               >
                 <Image
-                  src={course.image}
+                  src="/images/reactjs.jpg"
                   alt="Course Image"
                   width={300}
                   height={150}

@@ -2,39 +2,13 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import * as db from "../../../Database";
 
 export default function Assignments() {
   const params = useParams();
   const router = useRouter();
   const cid = params.cid as string;
-
-  // Data structure for assignments
-  const assignments = [
-    {
-      id: "123",
-      title: "A1 - ENV + HTML",
-      module: "Multiple Modules",
-      availableDate: "Jan 1 at 12:00am",
-      dueDate: "Jan 15 at 11:59pm",
-      points: 100,
-    },
-    {
-      id: "124",
-      title: "A2 - CSS + BOOTSTRAP",
-      module: "Multiple Modules",
-      availableDate: "Jan 15 at 12:00am",
-      dueDate: "Jan 30 at 11:59pm",
-      points: 100,
-    },
-    {
-      id: "125",
-      title: "A3 - REACT + TYPESCRIPT",
-      module: "Multiple Modules",
-      availableDate: "Feb 1 at 12:00am",
-      dueDate: "Feb 15 at 11:59pm",
-      points: 100,
-    },
-  ];
+  const assignments = db.assignments;
 
   const handleAddAssignment = () => {
     router.push(`/Courses/${cid}/Assignments/new`);
@@ -42,7 +16,7 @@ export default function Assignments() {
 
   return (
     <div id="wd-assignments" style={{ padding: "20px" }}>
-      {/* Search and Buttons Row */}
+      {/* Search and Buttons Row - keep as is */}
       <div
         style={{
           display: "flex",
@@ -51,7 +25,6 @@ export default function Assignments() {
           marginBottom: "20px",
         }}
       >
-        {/* Search - Left side with magnifying glass */}
         <div style={{ position: "relative", width: "300px" }}>
           <i
             className="bi bi-search"
@@ -75,7 +48,6 @@ export default function Assignments() {
           />
         </div>
 
-        {/* Buttons - Right side */}
         <div style={{ display: "flex", gap: "10px" }}>
           <button
             id="wd-add-assignment-group"
@@ -110,7 +82,6 @@ export default function Assignments() {
 
       {/* Assignments Section */}
       <div style={{ border: "1px solid #ddd", borderRadius: "4px" }}>
-        {/* Header */}
         <div
           style={{
             backgroundColor: "#f0f0f0",
@@ -148,65 +119,70 @@ export default function Assignments() {
           id="wd-assignment-list"
           style={{ listStyle: "none", padding: 0, margin: 0 }}
         >
-          {assignments.map((assignment, index) => (
-            <li
-              key={assignment.id}
-              className="wd-assignment-list-item"
-              style={{
-                borderLeft: "4px solid green",
-                padding: "12px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                borderBottom:
-                  index < assignments.length - 1 ? "1px solid #ddd" : "none",
-              }}
-            >
-              <div>
-                <i
-                  className="bi bi-grip-vertical"
-                  style={{ marginRight: "10px", color: "#666" }}
-                ></i>
-                <i
-                  className="bi bi-file-text"
-                  style={{ marginRight: "10px", color: "green" }}
-                ></i>
-                <div style={{ display: "inline-block" }}>
-                  <Link
-                    href={`/Courses/${cid}/Assignments/${assignment.id}`}
-                    className="wd-assignment-link"
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    <strong>{assignment.title}</strong>
-                  </Link>
-                  <div
-                    style={{
-                      fontSize: "14px",
-                      color: "#666",
-                      marginTop: "4px",
-                    }}
-                  >
-                    <span style={{ color: "red" }}>{assignment.module}</span> |{" "}
-                    <strong>Not available until</strong>{" "}
-                    {assignment.availableDate} |
-                    <br />
-                    <strong>Due</strong> {assignment.dueDate} |{" "}
-                    {assignment.points} pts
+          {assignments
+            .filter((assignment: any) => assignment.course === cid)
+            .map((assignment: any, index: number) => (
+              <li
+                key={assignment._id}
+                className="wd-assignment-list-item"
+                style={{
+                  borderLeft: "4px solid green",
+                  padding: "12px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  borderBottom:
+                    index <
+                    assignments.filter((a: any) => a.course === cid).length - 1
+                      ? "1px solid #ddd"
+                      : "none",
+                }}
+              >
+                <div>
+                  <i
+                    className="bi bi-grip-vertical"
+                    style={{ marginRight: "10px", color: "#666" }}
+                  ></i>
+                  <i
+                    className="bi bi-file-text"
+                    style={{ marginRight: "10px", color: "green" }}
+                  ></i>
+                  <div style={{ display: "inline-block" }}>
+                    <Link
+                      href={`/Courses/${cid}/Assignments/${assignment._id}`}
+                      className="wd-assignment-link"
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <strong>{assignment.title}</strong>
+                    </Link>
+                    <div
+                      style={{
+                        fontSize: "14px",
+                        color: "#666",
+                        marginTop: "4px",
+                      }}
+                    >
+                      <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
+                      <strong>Not available until</strong>{" "}
+                      {assignment.availableFromDate} |
+                      <br />
+                      <strong>Due</strong> {assignment.dueDate} |{" "}
+                      {assignment.points} pts
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div>
-                <i
-                  className="bi bi-check-circle"
-                  style={{ marginRight: "10px", color: "green" }}
-                ></i>
-                <i
-                  className="bi bi-three-dots-vertical"
-                  style={{ cursor: "pointer" }}
-                ></i>
-              </div>
-            </li>
-          ))}
+                <div>
+                  <i
+                    className="bi bi-check-circle"
+                    style={{ marginRight: "10px", color: "green" }}
+                  ></i>
+                  <i
+                    className="bi bi-three-dots-vertical"
+                    style={{ cursor: "pointer" }}
+                  ></i>
+                </div>
+              </li>
+            ))}
         </ul>
       </div>
     </div>

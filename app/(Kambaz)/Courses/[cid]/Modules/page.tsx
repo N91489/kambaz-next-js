@@ -1,36 +1,15 @@
 "use client";
+import { useParams } from "next/navigation";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import * as db from "../../../Database";
 
 export default function Modules() {
-  // Data structure for modules and lessons
-  const modules = [
-    {
-      id: "M101",
-      name: "Week 1",
-      lessons: [
-        { id: "L101", title: "LEARNING OBJECTIVES" },
-        { id: "L102", title: "Introduction to the course" },
-        { id: "L103", title: "Learn what is Web Development" },
-      ],
-    },
-    {
-      id: "M102",
-      name: "Week 2",
-      lessons: [
-        { id: "L201", title: "LEARNING OBJECTIVES" },
-        { id: "L202", title: "Advanced Web Development Topics" },
-      ],
-    },
-    {
-      id: "M103",
-      name: "Week 3",
-      lessons: [],
-    },
-  ];
+  const { cid } = useParams();
+  const modules = db.modules;
 
   return (
     <div style={{ padding: "20px" }}>
-      {/* Buttons section */}
+      {/* Buttons section - keep as is */}
       <div
         style={{
           marginBottom: "20px",
@@ -62,7 +41,6 @@ export default function Modules() {
           View Progress
         </button>
 
-        {/* Publish All Dropdown */}
         <select
           style={{
             backgroundColor: "#e0e0e0",
@@ -94,75 +72,77 @@ export default function Modules() {
 
       {/* Data-Driven Modules List */}
       <ul id="wd-modules" style={{ listStyle: "none", padding: 0 }}>
-        {modules.map((module) => (
-          <li
-            key={module.id}
-            className="wd-module"
-            style={{ marginBottom: "10px" }}
-          >
-            {/* Module Header */}
-            <div
-              className="wd-title"
-              style={{
-                backgroundColor: "#f0f0f0",
-                padding: "12px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
+        {modules
+          .filter((module: any) => module.course === cid)
+          .map((module: any) => (
+            <li
+              key={module._id}
+              className="wd-module"
+              style={{ marginBottom: "10px" }}
             >
-              <div>
-                <i
-                  className="bi bi-grip-vertical"
-                  style={{ marginRight: "10px" }}
-                ></i>
-                <strong>{module.name}</strong>
-              </div>
-              <div>
-                <i
-                  className="bi bi-plus-circle"
-                  style={{ marginRight: "10px" }}
-                ></i>
-                <i className="bi bi-three-dots-vertical"></i>
-              </div>
-            </div>
-
-            {/* Lessons List (only if lessons exist) */}
-            {module.lessons.length > 0 && (
-              <ul
-                className="wd-lessons"
-                style={{ listStyle: "none", padding: 0 }}
+              {/* Module Header */}
+              <div
+                className="wd-title"
+                style={{
+                  backgroundColor: "#f0f0f0",
+                  padding: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
               >
-                {module.lessons.map((lesson, index) => (
-                  <li
-                    key={lesson.id}
-                    className="wd-lesson"
-                    style={{
-                      borderLeft: "4px solid green",
-                      backgroundColor: "white",
-                      padding: "12px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginTop: index > 0 ? "2px" : "0",
-                    }}
-                  >
-                    <div>
-                      <i
-                        className="bi bi-file-text"
-                        style={{ marginRight: "10px" }}
-                      ></i>
-                      <span className="wd-title">{lesson.title}</span>
-                    </div>
-                    <div>
-                      <i className="bi bi-three-dots-vertical"></i>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
+                <div>
+                  <i
+                    className="bi bi-grip-vertical"
+                    style={{ marginRight: "10px" }}
+                  ></i>
+                  <strong>{module.name}</strong>
+                </div>
+                <div>
+                  <i
+                    className="bi bi-plus-circle"
+                    style={{ marginRight: "10px" }}
+                  ></i>
+                  <i className="bi bi-three-dots-vertical"></i>
+                </div>
+              </div>
+
+              {/* Lessons List */}
+              {module.lessons && module.lessons.length > 0 && (
+                <ul
+                  className="wd-lessons"
+                  style={{ listStyle: "none", padding: 0 }}
+                >
+                  {module.lessons.map((lesson: any, index: number) => (
+                    <li
+                      key={lesson._id}
+                      className="wd-lesson"
+                      style={{
+                        borderLeft: "4px solid green",
+                        backgroundColor: "white",
+                        padding: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        marginTop: index > 0 ? "2px" : "0",
+                      }}
+                    >
+                      <div>
+                        <i
+                          className="bi bi-file-text"
+                          style={{ marginRight: "10px" }}
+                        ></i>
+                        <span className="wd-title">{lesson.name}</span>
+                      </div>
+                      <div>
+                        <i className="bi bi-three-dots-vertical"></i>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
       </ul>
     </div>
   );
