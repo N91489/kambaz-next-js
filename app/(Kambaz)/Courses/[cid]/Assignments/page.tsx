@@ -10,6 +10,9 @@ export default function Assignments() {
   const router = useRouter();
   const cid = params.cid as string;
   const assignments = db.assignments;
+  const filteredAssignments = assignments.filter(
+    (assignment: Assignment) => assignment.course === cid
+  );
 
   const handleAddAssignment = () => {
     router.push(`/Courses/${cid}/Assignments/new`);
@@ -17,7 +20,6 @@ export default function Assignments() {
 
   return (
     <div id="wd-assignments" style={{ padding: "20px" }}>
-      {/* Search and Buttons Row - keep as is */}
       <div
         style={{
           display: "flex",
@@ -81,7 +83,6 @@ export default function Assignments() {
         </div>
       </div>
 
-      {/* Assignments Section */}
       <div style={{ border: "1px solid #ddd", borderRadius: "4px" }}>
         <div
           style={{
@@ -115,75 +116,71 @@ export default function Assignments() {
           </div>
         </div>
 
-        {/* Data-Driven Assignment List */}
         <ul
           id="wd-assignment-list"
           style={{ listStyle: "none", padding: 0, margin: 0 }}
         >
-          {assignments
-            .filter((assignment: Assignment) => assignment.course === cid)
-            .map((assignment: Assignment, index: number) => (
-              <li
-                key={assignment._id}
-                className="wd-assignment-list-item"
-                style={{
-                  borderLeft: "4px solid green",
-                  padding: "12px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  borderBottom:
-                    index 
-                assignments.filter((a: Assignment) => a.course === cid).length - 1
-                      ? "1px solid #ddd"
-                      : "none",
-                }}
-              >
-                <div>
-                  <i
-                    className="bi bi-grip-vertical"
-                    style={{ marginRight: "10px", color: "#666" }}
-                  ></i>
-                  <i
-                    className="bi bi-file-text"
-                    style={{ marginRight: "10px", color: "green" }}
-                  ></i>
-                  <div style={{ display: "inline-block" }}>
-                    <Link
-                      href={`/Courses/${cid}/Assignments/${assignment._id}`}
-                      className="wd-assignment-link"
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      <strong>{assignment.title}</strong>
-                    </Link>
-                    <div
-                      style={{
-                        fontSize: "14px",
-                        color: "#666",
-                        marginTop: "4px",
-                      }}
-                    >
-                      <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
-                      <strong>Not available until</strong>{" "}
-                      {assignment.availableFromDate} |
-                      <br />
-                      <strong>Due</strong> {assignment.dueDate} |{" "}
-                      {assignment.points} pts
-                    </div>
+          {filteredAssignments.map((assignment: Assignment, index: number) => (
+            <li
+              key={assignment._id}
+              className="wd-assignment-list-item"
+              style={{
+                borderLeft: "4px solid green",
+                padding: "12px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderBottom:
+                  index < filteredAssignments.length - 1
+                    ? "1px solid #ddd"
+                    : "none",
+              }}
+            >
+              <div>
+                <i
+                  className="bi bi-grip-vertical"
+                  style={{ marginRight: "10px", color: "#666" }}
+                ></i>
+                <i
+                  className="bi bi-file-text"
+                  style={{ marginRight: "10px", color: "green" }}
+                ></i>
+                <div style={{ display: "inline-block" }}>
+                  <Link
+                    href={`/Courses/${cid}/Assignments/${assignment._id}`}
+                    className="wd-assignment-link"
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <strong>{assignment.title}</strong>
+                  </Link>
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      color: "#666",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <span style={{ color: "red" }}>Multiple Modules</span> |{" "}
+                    <strong>Not available until</strong>{" "}
+                    {assignment.availableFromDate} |
+                    <br />
+                    <strong>Due</strong> {assignment.dueDate} |{" "}
+                    {assignment.points} pts
                   </div>
                 </div>
-                <div>
-                  <i
-                    className="bi bi-check-circle"
-                    style={{ marginRight: "10px", color: "green" }}
-                  ></i>
-                  <i
-                    className="bi bi-three-dots-vertical"
-                    style={{ cursor: "pointer" }}
-                  ></i>
-                </div>
-              </li>
-            ))}
+              </div>
+              <div>
+                <i
+                  className="bi bi-check-circle"
+                  style={{ marginRight: "10px", color: "green" }}
+                ></i>
+                <i
+                  className="bi bi-three-dots-vertical"
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
