@@ -1,21 +1,70 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import * as db from "../../../../Database";
-import { Assignment } from "../../../../Database/types";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addAssignment, updateAssignment } from "../reducer";
+
+interface Assignment {
+  _id: string;
+  title: string;
+  course: string;
+  description: string;
+  points: number;
+  dueDate: string;
+  availableFromDate: string;
+  availableUntilDate: string;
+}
+
+interface RootState {
+  assignmentsReducer: {
+    assignments: Assignment[];
+  };
+}
 
 export default function AssignmentEditor() {
   const params = useParams();
+  const router = useRouter();
+  const dispatch = useDispatch();
   const cid = params.cid as string;
   const aid = params.aid as string;
 
-  const assignment = db.assignments.find((a: Assignment) => a._id === aid);
+  const { assignments } = useSelector(
+    (state: RootState) => state.assignmentsReducer
+  );
 
-  if (!assignment) {
-    return <div>Assignment not found</div>;
-  }
+  const [assignment, setAssignment] = useState<Assignment>({
+    _id: "",
+    title: "New Assignment",
+    course: cid,
+    description: "New Assignment Description",
+    points: 100,
+    dueDate: new Date().toISOString().split("T")[0],
+    availableFromDate: new Date().toISOString().split("T")[0],
+    availableUntilDate: new Date().toISOString().split("T")[0],
+  });
 
-  // Dropdown options data - keep as is
+  useEffect(() => {
+    if (aid && aid !== "new") {
+      const existingAssignment = assignments.find(
+        (a: Assignment) => a._id === aid
+      );
+      if (existingAssignment) {
+        setAssignment(existingAssignment);
+      }
+    }
+  }, [aid, assignments]);
+
+  const handleSave = () => {
+    if (aid === "new") {
+      dispatch(addAssignment(assignment));
+    } else {
+      dispatch(updateAssignment(assignment));
+    }
+    router.push(`/Courses/${cid}/Assignments`);
+  };
+
+  // Dropdown options data
   const assignmentGroups = [
     { value: "ASSIGNMENTS", label: "ASSIGNMENTS" },
     { value: "QUIZZES", label: "QUIZZES" },
@@ -58,7 +107,10 @@ export default function AssignmentEditor() {
         <input
           id="wd-name"
           className="form-control"
-          defaultValue={assignment.title}
+          value={assignment.title}
+          onChange={(e) =>
+            setAssignment({ ...assignment, title: e.target.value })
+          }
         />
       </div>
 
@@ -71,7 +123,10 @@ export default function AssignmentEditor() {
           id="wd-description"
           className="form-control"
           rows={10}
-          defaultValue={assignment.description}
+          value={assignment.description}
+          onChange={(e) =>
+            setAssignment({ ...assignment, description: e.target.value })
+          }
         />
       </div>
 
@@ -85,7 +140,10 @@ export default function AssignmentEditor() {
             id="wd-points"
             className="form-control"
             type="number"
-            defaultValue={assignment.points}
+            value={assignment.points}
+            onChange={(e) =>
+              setAssignment({ ...assignment, points: parseInt(e.target.value) })
+            }
           />
         </div>
       </div>
@@ -188,7 +246,10 @@ export default function AssignmentEditor() {
                 type="date"
                 id="wd-due-date"
                 className="form-control"
-                defaultValue={assignment.dueDate}
+                value={assignment.dueDate}
+                onChange={(e) =>
+                  setAssignment({ ...assignment, dueDate: e.target.value })
+                }
               />
             </div>
 
@@ -201,7 +262,13 @@ export default function AssignmentEditor() {
                   type="date"
                   id="wd-available-from"
                   className="form-control"
-                  defaultValue={assignment.availableFromDate}
+                  value={assignment.availableFromDate}
+                  onChange={(e) =>
+                    setAssignment({
+                      ...assignment,
+                      availableFromDate: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="col-md-6 mb-3">
@@ -212,7 +279,13 @@ export default function AssignmentEditor() {
                   type="date"
                   id="wd-available-until"
                   className="form-control"
-                  defaultValue={assignment.availableUntilDate}
+                  value={assignment.availableUntilDate}
+                  onChange={(e) =>
+                    setAssignment({
+                      ...assignment,
+                      availableUntilDate: e.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -226,9 +299,9 @@ export default function AssignmentEditor() {
         <Link href={`/Courses/${cid}/Assignments`}>
           <button className="btn btn-secondary">Cancel</button>
         </Link>
-        <Link href={`/Courses/${cid}/Assignments`}>
-          <button className="btn btn-danger">Save</button>
-        </Link>
+        <button className="btn btn-danger" onClick={handleSave}>
+          Save
+        </button>
       </div>
     </div>
   );

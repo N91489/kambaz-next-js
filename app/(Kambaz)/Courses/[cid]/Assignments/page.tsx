@@ -2,20 +2,53 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import * as db from "../../../Database";
-import { Assignment } from "../../../Database/types";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteAssignment } from "./reducer";
+
+interface Assignment {
+  _id: string;
+  title: string;
+  course: string;
+  description: string;
+  points: number;
+  dueDate: string;
+  availableFromDate: string;
+  availableUntilDate: string;
+}
+
+interface RootState {
+  assignmentsReducer: {
+    assignments: Assignment[];
+  };
+}
 
 export default function Assignments() {
   const params = useParams();
   const router = useRouter();
+  const dispatch = useDispatch();
   const cid = params.cid as string;
-  const assignments = db.assignments;
+
+  const { assignments } = useSelector(
+    (state: RootState) => state.assignmentsReducer
+  );
+
   const filteredAssignments = assignments.filter(
     (assignment: Assignment) => assignment.course === cid
   );
 
   const handleAddAssignment = () => {
     router.push(`/Courses/${cid}/Assignments/new`);
+  };
+
+  const handleDeleteAssignment = (
+    assignmentId: string,
+    assignmentTitle: string
+  ) => {
+    if (
+      window.confirm(`Are you sure you want to delete "${assignmentTitle}"?`)
+    ) {
+      dispatch(deleteAssignment(assignmentId));
+    }
   };
 
   return (
@@ -169,7 +202,21 @@ export default function Assignments() {
                   </div>
                 </div>
               </div>
-              <div>
+              <div
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <i
+                  className="bi bi-trash"
+                  style={{
+                    cursor: "pointer",
+                    color: "red",
+                    fontSize: "18px",
+                  }}
+                  onClick={() =>
+                    handleDeleteAssignment(assignment._id, assignment.title)
+                  }
+                  title="Delete assignment"
+                ></i>
                 <i
                   className="bi bi-check-circle"
                   style={{ marginRight: "10px", color: "green" }}
