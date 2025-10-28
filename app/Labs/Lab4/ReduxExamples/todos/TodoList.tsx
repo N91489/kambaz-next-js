@@ -1,4 +1,6 @@
 "use client";
+export const dynamic = "force-dynamic";
+
 import TodoForm from "./TodoForm";
 import TodoItem from "./TodoItem";
 import { useSelector } from "react-redux";
